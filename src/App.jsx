@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import Die from "./Die";
 import { nanoid } from "nanoid";
 import Confetti from "react-confetti";
@@ -11,27 +11,36 @@ export default function App() {
   const { width, height } = useWindowSize();
   const [dice, setDice] = useState(() => generateAllNewDice());
   const buttonRef = useRef(null);
- 
+  const [highScore, setHighScore] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("highscore") || null);
+    } catch {
+      return null;
+    }
+  });
+
   const gameWon =
     dice.every((die) => die.isHeld) &&
     dice.every((die) => die.value === dice[0].value);
-   let highScore=0;
-   highScore =JSON.parse(localStorage.getItem('highscore'));
-  
+
   useEffect(() => {
     if (gameWon) {
       stop();
       buttonRef.current.focus();
-     
-      if(!highScore || elapsedTime < highScore){
-        localStorage.setItem('highscore',JSON.stringify(elapsedTime));
+
+      if (!highScore || elapsedTime < highScore) {
+        setHighScore(elapsedTime);
+        localStorage.setItem("highscore", JSON.stringify(elapsedTime));
       }
     }
-  }, [gameWon]);
+
+  }, [gameWon, highScore]);
 
   function generateAllNewDice() {
-    return new Array(10).fill(0).map(() => ({
-      value: Math.ceil(Math.random() * 6),
+    const NUM_DICE = 10;
+    const MAX_DIE_VALUE = 6;
+    return new Array(NUM_DICE).fill(0).map(() => ({
+      value: Math.ceil(Math.random() * MAX_DIE_VALUE),
       isHeld: false,
       id: nanoid(),
     }));
@@ -59,14 +68,16 @@ export default function App() {
     );
   }
 
-  const diceElements = dice.map((dieObj) => (
-    <Die
-      key={dieObj.id}
-      value={dieObj.value}
-      isHeld={dieObj.isHeld}
-      hold={() => hold(dieObj.id)}
-    />
-  ));
+  const diceElements = useMemo(() =>
+    dice.map((dieObj) => (
+      <Die
+        key={dieObj.id}
+        value={dieObj.value}
+        isHeld={dieObj.isHeld}
+        hold={() => hold(dieObj.id)}
+      />
+    ))
+  );
 
   return (
     <main>
@@ -77,14 +88,21 @@ export default function App() {
         )}
       </div>
       <h1 className="title">Tenzies</h1>
-      <HighScore Hscore={formatTime(highScore)}  score={formatTime(elapsedTime)} />
-
+      <HighScore
+        Hscore={highScore !== null ? formatTime(highScore) : "N/A"}
+        score={formatTime(elapsedTime)}
+      />
       <p className="instructions">
         Roll until all dice are the same. Click each die to freeze it at its
         current value between rolls.
       </p>
       <div className="dice-container">{diceElements}</div>
-      <button ref={buttonRef} className="roll-dice" onClick={rollDice}>
+      <button
+        ref={buttonRef}
+        className="roll-dice"
+        onClick={rollDice}
+        aria-label={gameWon ? "Start a new game" : "Roll the dice"}
+      >
         {gameWon ? "New Game" : "Roll"}
       </button>
     </main>
