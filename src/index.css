@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
 }
@@ -7,24 +8,37 @@ body {
     margin: 0;
     background-color: #0B2434;
     padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh; /* Updated */
-    overflow-x: hidden; /* Added */
+   
+     display: flex;
+     
+     align-items: center;
+     justify-content: center;
+     height: 100vh;
+     box-sizing:border-box;
+     overflow-x: hidden;
+
+
+     
+
+     
 }
 
 div#root {
-    margin: 0 auto;
-    max-width: 500px;
-    width: 100%; /* Updated */
+ 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure it doesn't exceed screen width */
     box-sizing: border-box;
 }
 
 main {
+ 
     background-color: #F5F5F5;
-    height: 100%;
-    width: 100%;
+   
+
+    
+    width:100%;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -51,10 +65,14 @@ main {
     margin-bottom: 40px;
 }
 
+button {
+    font-family: Karla, sans-serif;
+    cursor: pointer;
+}
+
 .dice-container button {
-    aspect-ratio: 1;
-    width: calc(20% - 8px); /* Updated */
-    max-width: 3rem; /* Added */
+   aspect-ratio: 1;
+    width: 3rem;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     border: none;
@@ -73,4 +91,44 @@ button.roll-dice {
     background-color: #5035FF;
     color: white;
     font-size: 1.2rem;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.highScore{
+    width: 100%;
+    display: flex;
+    justify-content:space-between;
+    padding: 10px;
+    align-items: center;
+    font-size: 18px;
+}
+
+
+.highScore h3:first-of-type {
+    color: rgb(9, 90, 5);
+}
+
+.highScore h3:last-of-type {
+    color: rgb(19, 33, 188); 
+   
+}
+
+
+@media (min-width:500px){
+   
+    main{
+        width: 400px;
+       
+    }
 }
