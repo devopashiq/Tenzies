@@ -10,7 +10,7 @@ Tenzies is a dice-based game where the goal is to roll and hold dice until all v
 - **Accessibility Support:** Includes ARIA live regions and keyboard navigation.
 
 ## Demo
-You can check out the live version of the project here: [Live Demo Link](#) *(Replace with your deployed link)*
+You can check out the live version of the project here: [https://cf9b1d79.tenzies1.pages.dev](#) *(Replace with your deployed link)*
 
 ---
 
