@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import Confetti from "react-confetti";
 import useWindowSize from "./hooks/useWindowSize.JSX";
 import HighScore from "./highScore";
-import { useTimer } from "./context/timer";
+import { useTimer } from "./context/Timer";
 
 export default function App() {
   const { formatTime, start, stop, reset, elapsedTime } = useTimer();
